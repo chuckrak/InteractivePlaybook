@@ -3,8 +3,8 @@ import java.util.Random;
 
 import javax.swing.*;
 public class PlayManager extends JPanel{
-	private int width = 1000, height = 761, yardLength = 45; 
-	private double pixelsPerYard = height/yardLength;
+	private int width = 900, height = 704, fieldYards = 44; 
+	private double pixelsPerYard = height/fieldYards;
 	public Field field;
 //	private Box wall;
 //	private AlignmentChecker checker;
@@ -12,9 +12,10 @@ public class PlayManager extends JPanel{
 	private Random rand;
 	public PlayManager() {
 		super(new GridLayout(45, 53));
+		
 		field = new Field();
 //		checker = new AlignmentChecker();
-		setBackground(Color.GREEN);
+		setBackground(new Color(42, 110, 42));
 //		setLayout(new GridLayout(45,50));
 //		play = new JPanel(new GridLayout(45, 50));
 		updateMap();
@@ -97,23 +98,23 @@ public class PlayManager extends JPanel{
 	}
 	public void drawFieldLines(Graphics g) {
 		g.setColor(Color.WHITE);
-		for(int i = (int) pixelsPerYard*10; i <= 1001; i += pixelsPerYard*5) { // 5 yard lines
+		for(int i = (int) pixelsPerYard*10; i <= width+1; i += pixelsPerYard*5) { // 5 yard lines
 			g.setColor(Color.WHITE);
-			g.drawLine(0, i, 1000, i);
+			g.drawLine(0, i, width, i);
 		}
 		for(int i = (int) pixelsPerYard*10; i < 1000; i += pixelsPerYard) { // hashes
-			g.drawLine(0, i, 25, i);//leftmost hash
-			g.drawLine(400, i, 425, i);//left middle hash
-			g.drawLine(575, i, 600, i);//right middle hash
-			g.drawLine(975, i, 1000, i);//rightmost hash
+			g.drawLine(0, i, width/40, i);//leftmost hash
+			g.drawLine((int)((4 * (double) width) / 10), i, (int)(4.25 * (double) width / 10), i);//left middle hash
+			g.drawLine((int)((5.75 * (double) width) / 10), i, (int)((6 * (double) width) / 10), i);//right middle hash
+			g.drawLine((39*width)/40, i, width, i);//rightmost hash
 		}
 	}
 	public void drawEndzone(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillRect(0, 0, 1000, (int) pixelsPerYard*10);
-		g.setColor(Color.ORANGE);
-		g.setFont(new Font("Bold", Font.BOLD, 100));
-		g.drawString("SAGEHENS", 100, 120);
+		g.setColor(new Color(52, 157, 223));
+		g.fillRect(0, 0, width, (int) pixelsPerYard*10);
+		g.setColor(new Color(232, 159, 32));
+		g.setFont(new Font("Bold", Font.PLAIN, 100));
+		g.drawString("POMONA-PITZER", width/20, 120);
 	}
 	public void drawNumbers(Graphics g) {
 		g.setColor(Color.WHITE);
@@ -121,16 +122,16 @@ public class PlayManager extends JPanel{
 		int fieldNumber1 = 10;
 		int fieldNumber2 = 10;
 		Graphics2D g2 = (Graphics2D)g;
-		for(int i = (int)pixelsPerYard*20 - 47; i < 1000; i += pixelsPerYard*10) { // left numbers
-			drawRotate(g2, 101, i, 90, "" + fieldNumber1);
+		for(int i = (int)pixelsPerYard*20 - 47; i < width; i += pixelsPerYard*10) { // left numbers
+			drawRotate(g2, width/10, i, 90, "" + fieldNumber1);
 //			drawRotate(g2, 799, i, 270, "" + fieldNumber1);
 //			g.drawString("" + fieldNumber, 101, i);
 //			g.drawString("" + fieldNumber, 799, i);
 			fieldNumber1 += 10;	
 		}
-		for(int i = (int)pixelsPerYard*20 + 47; i < 1000; i += pixelsPerYard*10) { // right numbers
+		for(int i = (int)pixelsPerYard*20 + 47; i < width; i += pixelsPerYard*10) { // right numbers
 //			drawRotate(g2, 101, i, 90, "" + fieldNumber1);
-			drawRotate(g2, 899, i, 270, "" + fieldNumber2);
+			drawRotate(g2, 9 * width / 10, i, 270, "" + fieldNumber2);
 //			g.drawString("" + fieldNumber, 101, i);
 //			g.drawString("" + fieldNumber, 799, i);
 			fieldNumber2 += 10;	
