@@ -32,11 +32,13 @@ public class Field {
 		moveFailure.setPreferredSize(new Dimension(400, 100));
 	}
 	public void makeDBs() {
+		// System.out.println("mdbsLeft Strength: " + offense.leftStrength);
+		// System.out.println("mdbs odd: " + offense.isOdd);
 		if(!offense.isOdd) {
-			if(offense.leftStrength && offense.defensiveFront != 2) {
+			if(offense.leftStrength/* && offense.defensiveFront != 2*/) {
 				footballField[offense.off[0]][offense.off[1]] = new EntityHolder(new DefensivePlayer("$"));
 			}
-			else if(offense.defensiveFront!=2) { 
+			else/* if(offense.defensiveFront!=2)*/ { 
 				footballField[offense.mirror(offense.off)][offense.off[1]] = new EntityHolder(new DefensivePlayer("$"));
 			}
 		}
@@ -53,12 +55,12 @@ public class Field {
 		player2X = 32;
 		player2Y = 35;
 		footballField[player1X][player1Y] = new EntityHolder(new ControlledDefensivePlayer(defensiveEnd));
-		if(offense.defensiveFront == 3) {
-			footballField[player2X][player2Y] = new EntityHolder(new ControlledDefensivePlayer("S"));	
-		}
-		else {
-			footballField[player2X][player2Y] = new EntityHolder(new ControlledDefensivePlayer("E"));
-		}
+		// if(offense.defensiveFront == 3) {
+			// footballField[player2X][player2Y] = new EntityHolder(new ControlledDefensivePlayer("S"));	
+		// }
+		// else {
+		footballField[player2X][player2Y] = new EntityHolder(new ControlledDefensivePlayer("E"));
+		// }
 
 	}
 	public void makeLinebackers() {
@@ -134,169 +136,168 @@ public class Field {
 					break;
 				}
 			}
-//			else if(!offense.isOdd && offense.leftStrength){
-//				switch(offense.randForm) {
-//				case 0:
-//					footballField[20][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					footballField[26][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign[0] = 30;
-//					offense.dropAlign[1] = 25;
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				case 1:
-//					footballField[25][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					footballField[14][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign = offense.off;
-//					offense.dropAlign[1] = offense.mirror(offense.off);
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				case 2:
-//					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-//					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign = offense.splitOff;
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				case 3:
-//					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-//					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign = offense.off;
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				case 4: 
-//					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-//					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign = offense.off;
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				case 5:
-//					footballField[16][24] = new EntityHolder(new DefensivePlayer(linebacker, 1));
-//					footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-//					offense.dropAlign = offense.splitOff;
-//					if(offense.leftTightEnd) {
-//						offense.rushAlign = offense.tight;
-//					}
-//					else {
-//						offense.rushAlign = offense.ghost;
-//					}
-//					break;
-//				}
-//				
-//			}
-//		}
-		else if(offense.isOdd && !offense.leftStrength) {
-			switch(offense.randForm) {
-			case 0:
-				footballField[26][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				footballField[22][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign[0] = 32;
-				offense.dropAlign[1] = 25;
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
+			else if(offense.leftStrength){
+				switch(offense.randForm) {
+				case 0:
+					footballField[20][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					footballField[26][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign[0] = 30;
+					offense.dropAlign[1] = 25;
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
+				case 1:
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					offense.dropAlign[0] = offense.mirror(offense.off);
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
+				case 2:
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.splitOff;
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
+				case 3:
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
+				case 4: 
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
+				case 5:
+					footballField[16][24] = new EntityHolder(new DefensivePlayer(linebacker, 1));
+					footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.splitOff;
+					if(offense.leftTightEnd) {
+						offense.rushAlign = offense.tight;
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+					}
+					break;
 				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
+				
+			}
+			else if(offense.isOdd) {
+				switch(offense.randForm) {
+				case 0:
+					footballField[26][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					footballField[22][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign[0] = 32;
+					offense.dropAlign[1] = 25;
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
+				case 1:
+					footballField[25][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					offense.dropAlign[0] = offense.mirror(offense.off);
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
+				case 2:
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.splitOff;
+					offense.dropAlign[0] = offense.mirror(offense.splitOff);
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
+				case 3:
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					offense.dropAlign[0] = offense.mirror(offense.off);
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
+				case 4: 
+					footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
+					footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.off;
+					offense.dropAlign[0] = offense.mirror(offense.off);
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
+				case 5:
+					footballField[16][24] = new EntityHolder(new DefensivePlayer(linebacker, 1));
+					footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
+					offense.dropAlign = offense.splitOff;
+					offense.dropAlign[0] = offense.mirror(offense.splitOff);
+					if(offense.rightTightEnd) {
+						offense.rushAlign = offense.tight;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					else {
+						offense.rushAlign = offense.ghost;
+						offense.rushAlign[0] = offense.mirror(offense.tight);
+					}
+					break;
 				}
-				break;
-			case 1:
-				footballField[25][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign = offense.off;
-				offense.dropAlign[0] = offense.mirror(offense.off);
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				break;
-			case 2:
-				footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-				footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign = offense.splitOff;
-				offense.dropAlign[0] = offense.mirror(offense.splitOff);
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				break;
-			case 3:
-				footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-				footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign = offense.off;
-				offense.dropAlign[0] = offense.mirror(offense.off);
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				break;
-			case 4: 
-				footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
-				footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign = offense.off;
-				offense.dropAlign[0] = offense.mirror(offense.off);
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				break;
-			case 5:
-				footballField[16][24] = new EntityHolder(new DefensivePlayer(linebacker, 1));
-				footballField[38][23] = new EntityHolder(new DefensivePlayer(linebacker, 2));
-				offense.dropAlign = offense.splitOff;
-				offense.dropAlign[0] = offense.mirror(offense.splitOff);
-				if(offense.rightTightEnd) {
-					offense.rushAlign = offense.tight;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				else {
-					offense.rushAlign = offense.ghost;
-					offense.rushAlign[0] = offense.mirror(offense.tight);
-				}
-				break;
 			}
 		}
-	  }
 		else {
 			footballField[24][25] = new EntityHolder(new DefensivePlayer(linebacker, 0));
 			footballField[28][25] = new EntityHolder(new DefensivePlayer(linebacker, 2));

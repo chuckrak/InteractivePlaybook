@@ -21,7 +21,7 @@ public class RandomOffenseMaker {
 	public boolean lineShift = true; 
 	public int[] rushAlign, dropAlign, secondDropAlign;
 	public boolean isFlipped, isGun, rbStrong, isSplit;
-	public boolean leftStrength, squeeze, cardinal, under, eagle;
+	public boolean leftStrength, squeeze, cardinal, under, eagle, angle;
 	public boolean leftTightEnd, rightTightEnd;
 	private String tackle = "T", guard = "G";
 	public String coverageCall;
@@ -29,6 +29,7 @@ public class RandomOffenseMaker {
 	private String leftOrRight, front;
 	public int coverage;
 	public String playCall;
+	public String offensiveFormation;
 	private String geeHaw;
 	public int randForm;
 	public int defensiveFront;
@@ -43,8 +44,9 @@ public class RandomOffenseMaker {
 		rbStrong = rand.nextBoolean();
 		isSplit = rand.nextBoolean();
 		randForm = rand.nextInt(6);
+		defensiveFront = rand.nextInt(4);
 		squeeze = rand.nextBoolean();
-
+		offensiveFormation = "";
 		
 //		MAKING OFFENSE ALIGNMENTS
 		wideOutOn = new int [] {6,20};
@@ -61,45 +63,15 @@ public class RandomOffenseMaker {
 		fullBack = new int [] {26,17};
 		halfBack = new int [] {26,15};
 		runningBack = new int [] {28,15};
-		trips3 = new int[] {28,15};
+		trips3 = new int[] {13,18};
 		split = new int[] {38,20};
 		offHalfBack = new int[] {24,14};
-		trips2 = new int[] {9,18};
-//		wideOutOn[0] = 6;
-//		wideOutOn[1] = 20;
-//		wideOutOff[0] = 6;
-//		wideOutOff[1] = 19;
-//		twins[0] = 12;
-//		twins[1] = 18;
-//		wing[0] = 18;
-//		wing[1] = 19;
-//		slot[0] = 19;
-//		slot[1] = 19;
-//		tightEnd[0] = 20;
-//		tightEnd[1] = 20;
-//		proQb[0] = 26;
-//		proQb[1] = 19;
-//		gunQb[0] = 26;
-//		gunQb[1] = 15;
-//		fullBack[0] = 26;
-//		fullBack[1] = 17;
-//		halfBack[0] = 26;
-//		halfBack[1] = 15;
-//		runningBack[0] = 28;
-//		runningBack[1] = 15;
-//		split[0] = 38;
-//		split[1] = 20;
-//		trips3[0] = 13;
-//		trips3[1] = 18;
-//		offHalfBack[0] = 24;
-//		offHalfBack[1] = 14;
-//		trips2[0] = 9;
-//		trips2[1] = 18;
-//		
+		trips2 = new int[] {9,18};		
 //		MAKING DEFENSE ALIGNMENTS
 		cardinal = false;
 		eagle = false;
 		under = false;
+		angle = false;
 		outCall = false;
 		isBlue = false;
 		isGreen = false;
@@ -145,6 +117,7 @@ public class RandomOffenseMaker {
 //		MAKING FIELD
 		makeEmptyPieceContent();
 		makeOffensiveLineman(isFlipped);
+		// makeDefensiveLineman(isFlipped); // moved here because coverage call needs to know if cardinal is happening
 		switch(randForm) {
 			case 0:
 				makePro(isFlipped, isSplit);
@@ -172,8 +145,9 @@ public class RandomOffenseMaker {
 				break;
 		}
 		getStrength();
+		makeDefensiveLineman(isFlipped); // moved here because coverage call needs to know if cardinal is happening
 		coverageCall = randomCoverageCall(leftOrRight, isTrips);
-		makeDefensiveLineman(isFlipped);
+		// makeDefensiveLineman(isFlipped); // moved here because coverage call needs to know if cardinal is happening
 //		makeDefensiveLineman(isFlipped, makeOutCall());
 
 
@@ -227,16 +201,16 @@ public class RandomOffenseMaker {
 
 	}
 	public void makeDefensiveLineman(boolean flipped) {
-		defensiveFront = rand.nextInt(4);
+		// defensiveFront = rand.nextInt(4);
 		if(outCall) {
 			defensiveFront = 1;
 		}
 //		System.out.println("odd " + isOdd);
-		if(!isOdd) {
-			if(defensiveFront == 3) {
-				defensiveFront = 2;
-			}
-		}
+		// if(!isOdd) {
+		// 	if(defensiveFront == 3) {
+		// 		defensiveFront = 2;
+		// 	}
+		// }
 		switch(defensiveFront){
 			case 0: // angle 
 				for(int i = 22, j = 21; i<=30; i+=4){
@@ -245,19 +219,20 @@ public class RandomOffenseMaker {
 						baseFootballField[i][j] = new EntityHolder(new DefensivePlayer(guard, 1));
 					}
 				}
+				angle = true;
 		        break;
 			case 1: // eagle
-				for(int i = 22, j = 21; i<=30; i++) {
-					baseFootballField[i][j] = new EntityHolder(new Empty());
-				}
+				// for(int i = 22, j = 21; i<=30; i++) {
+				// 	baseFootballField[i][j] = new EntityHolder(new Empty());
+				// }
 				if(!isGee()) {
 					if(outCall) {
-						baseFootballField[30][21] = new EntityHolder(new DefensivePlayer(tackle, 2));
+						baseFootballField[30][21] = new EntityHolder(new DefensivePlayer(tackle, 0));
 					}
 					else {
 						baseFootballField[28][21] = new EntityHolder(new DefensivePlayer(tackle, 2));
 					}
-					baseFootballField[26][21] = new EntityHolder(new DefensivePlayer(guard, 2));
+					baseFootballField[26][21] = new EntityHolder(new DefensivePlayer(guard, 0));
 					baseFootballField[22][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
 				}
 				else {
@@ -265,9 +240,9 @@ public class RandomOffenseMaker {
 						baseFootballField[22][21] = new EntityHolder(new DefensivePlayer(tackle, 2));
 					}
 					else {
-						baseFootballField[24][21] = new EntityHolder(new DefensivePlayer(tackle, 2));
+						baseFootballField[24][21] = new EntityHolder(new DefensivePlayer(tackle, 0));
 					}
-					baseFootballField[26][21] = new EntityHolder(new DefensivePlayer(guard, 0));
+					baseFootballField[26][21] = new EntityHolder(new DefensivePlayer(guard, 2));
 					baseFootballField[30][21] =  new EntityHolder(new DefensivePlayer(tackle, 2));
 				}
 				eagle = true;
@@ -293,26 +268,13 @@ public class RandomOffenseMaker {
 				cardinal = true;
 		        break;
 			case 3: //under
-				if(!flipped) {
-					baseFootballField[24][21] = new EntityHolder(new DefensivePlayer(tackle, 0));//interior
-					baseFootballField[28][21] = new EntityHolder(new DefensivePlayer(tackle, 0));//interior
-					if(rightTightEnd) {
-						baseFootballField[33][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
-					}
-					else {
-						baseFootballField[31][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
-					}
-					
+				baseFootballField[24][21] = new EntityHolder(new DefensivePlayer(tackle, 0));//interior
+				baseFootballField[28][21] = new EntityHolder(new DefensivePlayer(tackle, 0));//interior
+				if(leftTightEnd) {
+					baseFootballField[19][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
 				}
 				else {
-					baseFootballField[28][21] = new EntityHolder(new DefensivePlayer(tackle, 2));//interior
-					baseFootballField[24][21] = new EntityHolder(new DefensivePlayer(tackle, 2));//interior
-					if(leftTightEnd) {
-						baseFootballField[19][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
-					}
-					else {
-						baseFootballField[21][21] = new EntityHolder(new DefensivePlayer(tackle, 2));
-					}
+					baseFootballField[21][21] =  new EntityHolder(new DefensivePlayer(tackle, 0));
 				}
 				under = true;
 				break;
@@ -408,7 +370,9 @@ public class RandomOffenseMaker {
 	}
 	//Pro Also contains BoxCars	
 	public void makePro(boolean flipped, boolean isSplit) {
+		offensiveFormation = "Pro";
 		if(!flipped) {
+			offensiveFormation += " Left";
 			baseFootballField[wideOutOff[0]][wideOutOff[1]] = new EntityHolder(new OffensivePlayer());
 			if(isSplit) {
 				baseFootballField[split[0]][split[1]] = new EntityHolder(new OffensivePlayer());
@@ -420,8 +384,9 @@ public class RandomOffenseMaker {
 				leftTightEnd = true;
 				rightTightEnd = false;
 			}
-			else {
-				baseFootballField[mirror(tightEnd)][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift)); // boxcars
+			else { // BOXCARS NOT PRO
+				offensiveFormation = "Boxcars Left"; 
+				baseFootballField[mirror(tightEnd)][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				rushAlign[0] = 33; //tight
 				rushAlign[1] = 21;
 				dropAlign[0] = 18; // rock
@@ -436,6 +401,7 @@ public class RandomOffenseMaker {
 			baseFootballField[halfBack[0]][halfBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 		}
 		else {
+			offensiveFormation += " Right";
 			baseFootballField[mirror(wideOutOff)][wideOutOff[1]] = new EntityHolder(new OffensivePlayer());
 			if(isSplit) {
 				baseFootballField[mirror(split)][split[1]] = new EntityHolder(new OffensivePlayer());
@@ -448,7 +414,8 @@ public class RandomOffenseMaker {
 				rightTightEnd = true;
 			
 			}
-			else {
+			else { //BOXCARS
+				offensiveFormation = "Boxcars Right";
 				baseFootballField[tightEnd[0]][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 				rushAlign[0] = 19;
 				rushAlign[1] = 21;
@@ -467,6 +434,7 @@ public class RandomOffenseMaker {
 //		System.out.println(wideOutOn[0]);
 	}
 	public void makeLightning(boolean flipped, boolean gun, boolean rbStrong) {
+		offensiveFormation = "Lightning";
 		int rbX, rbXFlipped;
 		if(rbStrong) {
 			rbX = 24;
@@ -478,6 +446,7 @@ public class RandomOffenseMaker {
 		}
 		if(!flipped) {
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[26][15] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbX][15] = new EntityHolder(new OffensivePlayer(lineShift));
 			}
@@ -497,6 +466,7 @@ public class RandomOffenseMaker {
 		}
 		else {
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[26][15] = new EntityHolder(new OffensivePlayer(lineShift));
 				baseFootballField[rbXFlipped][15] = new EntityHolder(new OffensivePlayer(lineShift));
 
@@ -517,9 +487,16 @@ public class RandomOffenseMaker {
 			leftTightEnd = false;
 			rightTightEnd = false;
 		}
-	}
+		if (rbStrong){
+			offensiveFormation += " Strong";
+		}
+		else if (gun){
+			offensiveFormation += " Weak";
+		}
+	}	
 	public void makeKings(boolean flipped, boolean isSplit, boolean gun, boolean rbStrong) {
 		int rbX, rbXFlipped;
+		offensiveFormation = "Kings";
 		if(!rbStrong) {
 			rbX = mirror(runningBack);
 			rbXFlipped =52-rbX;
@@ -529,7 +506,21 @@ public class RandomOffenseMaker {
 			rbXFlipped =52-rbX;
 		}
 		if(!flipped) {
+			if(isSplit) {
+				offensiveFormation += " Split Left";
+				baseFootballField[split[0]][split[1]] = new EntityHolder(new OffensivePlayer(lineShift));
+				rushAlign[0] = 31; //ghost
+				rushAlign[1] = 21;
+			}
+			else {
+				offensiveFormation += " Left";
+				baseFootballField[mirror(tightEnd)][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift));
+				rushAlign[0] = 33; //tight
+				rushAlign[1] = 21;
+				rightTightEnd = true;
+			}
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[gunQb[0]][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbX][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			
@@ -538,27 +529,36 @@ public class RandomOffenseMaker {
 				baseFootballField[proQb[0]][proQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[halfBack[0]][halfBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			}
-			if(isSplit) {
-				baseFootballField[split[0]][split[1]] = new EntityHolder(new OffensivePlayer(lineShift));
-				rushAlign[0] = 31; //ghost
-				rushAlign[1] = 21;
-			}
-			else {
-				baseFootballField[mirror(tightEnd)][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift));
-				rushAlign[0] = 33; //tight
-				rushAlign[1] = 21;
-				rightTightEnd = true;
-			}
 			baseFootballField[wideOutOn[0]][wideOutOn[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[trips2[0]][trips2[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[trips3[0]][trips3[1]] = new EntityHolder(new OffensivePlayer());
 			dropAlign[0] = 11; //split off
 			dropAlign[1] = 23;
 			leftStrength = true;
+			if(rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if(gun){
+				offensiveFormation += " Weak";
+			}
 			
 		}
 		else {
+			if(isSplit) {
+				offensiveFormation += " Split Right";
+				baseFootballField[mirror(split)][split[1]] = new EntityHolder(new OffensivePlayer(lineShift));
+				rushAlign[0] = 21; //ghost
+				rushAlign[1] = 21;
+			}
+			else {
+				offensiveFormation += " Right";
+				baseFootballField[tightEnd[0]][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift));
+				rushAlign[0] = 19; //tight
+				rushAlign[1] = 21;
+				leftTightEnd = true;
+			}
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[mirror(gunQb)][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbXFlipped][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			
@@ -567,28 +567,24 @@ public class RandomOffenseMaker {
 				baseFootballField[mirror(proQb)][proQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[mirror(halfBack)][halfBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			}
-			if(isSplit) {
-				baseFootballField[mirror(split)][split[1]] = new EntityHolder(new OffensivePlayer(lineShift));
-				rushAlign[0] = 21; //ghost
-				rushAlign[1] = 21;
-			}
-			else {
-				baseFootballField[tightEnd[0]][tightEnd[1]] = new EntityHolder(new OffensivePlayer(lineShift));
-				rushAlign[0] = 19; //tight
-				rushAlign[1] = 21;
-				leftTightEnd = true;
-			}
 			baseFootballField[mirror(wideOutOn)][wideOutOn[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[mirror(trips2)][trips2[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[mirror(trips3)][trips3[1]] = new EntityHolder(new OffensivePlayer());
 			dropAlign[0] = 41; //split off
 			dropAlign[1] = 23;
 			leftStrength = false;
+			if(rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if(gun){
+				offensiveFormation += " Weak";
+			}
 		}
 		
 	}
 	public void makeQueens(boolean flipped, boolean gun, boolean rbStrong) {
 		int rbX, rbXFlipped;
+		offensiveFormation = "Queens";
 		if(!rbStrong) {
 			rbX = mirror(runningBack);
 			rbXFlipped =52-rbX;
@@ -598,7 +594,9 @@ public class RandomOffenseMaker {
 			rbXFlipped =52-rbX;
 		}
 		if(!flipped) {
+			offensiveFormation += " Left";
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[gunQb[0]][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbX][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			}
@@ -616,9 +614,18 @@ public class RandomOffenseMaker {
 			dropAlign[1] = 23;
 			leftStrength = true;
 			rightTightEnd = true;
+			if (rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if (gun){
+				offensiveFormation += " Weak";
+			}
+			
 		}
 		else {
+			offensiveFormation += " Right";
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[mirror(gunQb)][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbXFlipped][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			
@@ -638,10 +645,18 @@ public class RandomOffenseMaker {
 			dropAlign[1] = 23;
 			leftStrength = false;
 			leftTightEnd = true;
+			if (rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if (gun){
+				offensiveFormation += " Weak";
+			}
+
 		}
 	}
 	public void makeAces(boolean flipped, boolean gun, boolean rbStrong) {
 		int rbX, rbXFlipped;
+		offensiveFormation = "Aces";
 		if(!rbStrong) {
 			rbX = mirror(runningBack);
 			rbXFlipped =52-rbX;
@@ -651,7 +666,9 @@ public class RandomOffenseMaker {
 			rbXFlipped =52-rbX;
 		}
 		if(!flipped) {
+			offensiveFormation += " Left"; 
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[gunQb[0]][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbX][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			
@@ -670,9 +687,18 @@ public class RandomOffenseMaker {
 			dropAlign[1] = 23;
 			leftStrength = true;
 			leftTightEnd = true;
+			if (rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if (gun){
+				offensiveFormation += " Weak";
+			}
+			
 		}
 		else {
+			offensiveFormation += " Right";
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[mirror(gunQb)][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 				baseFootballField[rbXFlipped][runningBack[1]] = new EntityHolder(new OffensivePlayer(lineShift));
 			
@@ -685,17 +711,27 @@ public class RandomOffenseMaker {
 			baseFootballField[mirror(wideOutOff)][wideOutOff[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[mirror(twins)][twins[1]] = new EntityHolder(new OffensivePlayer());
 			baseFootballField[wideOutOn[0]][wideOutOn[1]] = new EntityHolder(new OffensivePlayer());
-			rushAlign[0] = 34; //tight
-			rushAlign[1] = 22;
-			dropAlign[0] = 21; //ghost
-			dropAlign[1] = 21;
+			rushAlign[0] = 21; //ghost
+			rushAlign[1] = 21;
+			dropAlign[0] = 38; //off
+			dropAlign[1] = 23;
 			leftStrength = false;
 			rightTightEnd = true;
+			if (rbStrong){
+				offensiveFormation += " Strong";
+			}
+			else if (gun){
+				offensiveFormation += " Weak";
+			}
+			
 		}
 	}
 	public void makeEmpty(boolean flipped, boolean gun) {
+		offensiveFormation = "Jokers";
 		if(!flipped) {
+			offensiveFormation += " Left";
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[gunQb[0]][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 
 			}
 			else {
@@ -713,7 +749,9 @@ public class RandomOffenseMaker {
 			leftStrength = true;
 		}
 		else {
+			offensiveFormation += " Right";
 			if(gun) {
+				offensiveFormation += " Gun";
 				baseFootballField[mirror(gunQb)][gunQb[1]] = new EntityHolder(new OffensivePlayer(lineShift)); 			
 			}
 			else {
@@ -771,12 +809,18 @@ public class RandomOffenseMaker {
 		return "";
 	}
 	public String randomCoverageCall(String strengthCall, boolean trips) {
-		if(trips) {	
+		if(randForm == 2 /* KINGS */ || randForm == 5 /*JOKERS*/) { // TRIPS CHECK	
 			coverage = rand.nextInt(12);
 			switch(coverage) {
 				case 0:
-					coverageCall = "0 ";
-					isOdd = false;
+					if(!cardinal){
+						coverageCall = "0 ";
+						isOdd = false;
+					}
+					else{
+						coverageCall = "5 ";
+						isOdd = true;
+					}
 					break;
 				case 1:
 					coverageCall = "1 ";
@@ -795,8 +839,14 @@ public class RandomOffenseMaker {
 					isOdd = true;
 					break;
 				case 5:
-					coverageCall = "8 ";
-					isOdd = false;
+					if(!cardinal){
+						coverageCall = "8 ";
+						isOdd = false;
+					}
+					else{
+						coverageCall = "5 Tough ";
+						isOdd = true;
+					}
 					break;
 				case 6:
 					coverageCall = "Club ";
@@ -840,8 +890,14 @@ public class RandomOffenseMaker {
 			coverage = rand.nextInt(8);
 			switch(coverage) {
 				case 0:
-					coverageCall = "0 ";
-					isOdd = false;
+					if(!cardinal){
+						coverageCall = "0 ";
+						isOdd = false;
+					}
+					else{
+						coverageCall = "5 ";
+						isOdd = true;
+					}
 					break;
 				case 1:
 					coverageCall = "1 ";
@@ -860,8 +916,14 @@ public class RandomOffenseMaker {
 					isOdd = true;
 					break;
 				case 5:
-					coverageCall = "8 ";
-					isOdd = false;
+					if(!cardinal){
+						coverageCall = "8 ";
+						isOdd = false;
+					}
+					else{
+						coverageCall = "5 Tough ";
+						isOdd = true;
+					}
 					break;
 				case 6:
 					if(cardinal) {
@@ -900,12 +962,15 @@ public class RandomOffenseMaker {
 //			System.out.println("!odd adjustments trigerred");
 			if(!flipped) {
 				switch(randForm) {
+				
 				case 0:
+					//PRO
 					if(split) {
 						dropAlign = hip;
 						dropAlign[0] = mirror(dropAlign);
 						rushAlign = tight;			
 					}
+					//BOXCARS
 					else {
 						dropAlign = rock;
 						dropAlign[0] = mirror(dropAlign);
@@ -1114,10 +1179,13 @@ public class RandomOffenseMaker {
 		else if(eagle) {
 			front = "Eagle ";
 		}
-		else if(under) {
+		else if(under && isOdd) {
 			front = "Under Pittsburgh ";
 		}
-		else {
+		else if(under){
+			front = "Under Wide ";
+		}
+		else if (angle){
 			front = "Angle ";
 		}
 		if(isBlue) {
@@ -1140,30 +1208,7 @@ public class RandomOffenseMaker {
 		}
 //		System.out.println("under " + under);
 		if(under) {
-			if(!flipped) {
-				switch(randForm) {
-					case 0:
-						rushAlign = tight;
-						break;
-					case 1:
-						rushAlign = ghost;
-						break;
-					case 2: 
-						rushAlign = ghost;
-						break;
-					case 3:
-						rushAlign = ghost;
-						break;
-					case 4:
-						rushAlign = tight;
-						break;
-					case 5:
-						rushAlign = ghost;
-						break;
-				}
-			}
-			else {
-				switch(randForm) {
+			switch(randForm) {
 				case 0:
 					rushAlign = tight;
 					rushAlign[0] = mirror(tight);
@@ -1187,10 +1232,7 @@ public class RandomOffenseMaker {
 				case 5:
 					rushAlign = ghost;
 					rushAlign[0] = mirror(ghost);
-					break;
 			}
-			}
-			
 		}
 //		System.out.print("The players are supposed to be at X1: ");
 		if(cardinal) {	

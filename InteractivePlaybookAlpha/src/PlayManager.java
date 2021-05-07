@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.util.Random;
+// import java.util.Random;
 
 import javax.swing.*;
 public class PlayManager extends JPanel{
@@ -9,7 +9,7 @@ public class PlayManager extends JPanel{
 //	private Box wall;
 //	private AlignmentChecker checker;
 //	private JPanel play;
-	private Random rand;
+	// private Random rand;
 	public PlayManager() {
 		super(new GridLayout(45, 53));
 		

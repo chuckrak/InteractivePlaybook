@@ -1,17 +1,17 @@
 import java.awt.*;
-import javax.swing.InputMap;
+// import javax.swing.InputMap;
 import java.awt.event.*;
 import javax.swing.*;
 //import javax.swing.AbstractAction;
-import javax.swing.Box.Filler;
-import javax.swing.text.Keymap;
+// import javax.swing.Box.Filler;
+// import javax.swing.text.Keymap;
 public class InteractivePlaybook extends JFrame implements ActionListener {
 	private static PlayManager play;
 	private static final int InFocusedWindow = play.WHEN_IN_FOCUSED_WINDOW;
 	private AlignmentChecker checker;
 	private Box wall;
-	private JFrame alignmentOverlay, coverageOverlay, outCallOverlay, correctPosOverlay;
-	private JTextField coverage, alignment, outCall, correctPos;
+	private JFrame alignmentOverlay, coverageOverlay, outCallOverlay, correctPosOverlay, formCheckOverlay;
+	private JTextField coverage, alignment, outCall, correctPos, formation;
 	private Action pressedLeft, pressedRight, pressedUp, pressedDown;
 	private int player = 1;
 	private int[] playerX, playerY;
@@ -21,9 +21,9 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 	public Color green = new Color(42, 110, 42);
 	public Color blue = new Color(52, 157, 223);
 //	private String leftOrRight;
-	private String strength;
+	// private String strength;
 	private String playCall;
-	private boolean tripsFormation;
+	// private boolean tripsFormation;
 //	private Filler fill;
 //	private JPanel wall3;
 //	private JButton reset, clear, instructions, size, start, AIbutton;
@@ -74,7 +74,6 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		JButton b = (JButton) e.getSource();
 		if(b == checker.checkAlignment) {
 			alignment = new JTextField();
@@ -100,7 +99,6 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			alignmentOverlay.add(alignment);
 			alignmentOverlay.setBounds(500, 500, 500, 500);
 			alignmentOverlay.pack();
-			
 		}
 		if(b == checker.getCoverage) {
 			coverageOverlay = new JFrame("Play Call");
@@ -154,6 +152,7 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			playCall = play.field.offense.playCall;
 			coverage.setText(playCall);
 			play.updateMap();
+			checker.offensiveFormation.setText("DELETE & enter offensive formation");
 			coverageOverlay = new JFrame("Play Call");
 			coverageOverlay.isAlwaysOnTop();
 			coverageOverlay.setVisible(true);
@@ -204,11 +203,11 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			correctPosOverlay = new JFrame("Correct Positions");
 			if (play.field.offense.cardinal) {
 				correctPos.setText("Position 1: " + makeCoords(play.field.offense.dropAlign[0], play.field.offense.dropAlign[1]) + 
-						"'n Position 2: " + makeCoords(play.field.offense.secondDropAlign[0], play.field.offense.secondDropAlign[1]));	
+						"\nPosition 2: " + makeCoords(play.field.offense.secondDropAlign[0], play.field.offense.secondDropAlign[1]));	
 			}
 			else {
 				correctPos.setText("Position 1: " + makeCoords(play.field.offense.dropAlign[0], play.field.offense.dropAlign[1]) + 
-						"'n Position 2: " + makeCoords(play.field.offense.rushAlign[0], play.field.offense.rushAlign[1]));	
+						"\nPosition 2: " + makeCoords(play.field.offense.rushAlign[0], play.field.offense.rushAlign[1]));	
 
 			}
 			correctPosOverlay.add(correctPos);
@@ -217,6 +216,28 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			correctPosOverlay.setMinimumSize(new Dimension(400,100));
 			correctPosOverlay.pack();
 		}
+		if(b == checker.checkFormation){
+			formation = new JTextField();
+			formation.setEditable(false);
+			formation.setHorizontalAlignment(JTextField.CENTER);
+			formation.setPreferredSize(new Dimension(400,100));
+			formCheckOverlay = new JFrame("Offensive Formation Check");
+			String oForm = checker.offensiveFormation.getText();
+			oForm = oForm.strip().toLowerCase();
+			if (oForm.equals(play.field.offense.offensiveFormation.toLowerCase().strip())){
+				formation.setText("Correct!");			
+			}
+			else{
+				formation.setText("Incorrect. Formation is " + play.field.offense.offensiveFormation);
+			}
+			formCheckOverlay.add(formation);
+			formCheckOverlay.setBounds(500,500,500,500);
+			formCheckOverlay.setVisible(true);
+			formCheckOverlay.setMinimumSize(new Dimension(400,100));
+			formCheckOverlay.pack();
+		}
+		
+
 
 		
 	}
@@ -255,6 +276,7 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 		checker.outCall.addActionListener(this);
 		checker.correctPosition.addActionListener(this);
 		checker.currentPosition.addActionListener(this);
+		checker.checkFormation.addActionListener(this);
     }
     
     private void defineActions() {
@@ -332,7 +354,12 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 		play.getActionMap().put("pressedDown", pressedDown);
 
     }
-    
+		// DEBUGGING
+		// System.out.println("cardinal : " + play.field.offense.cardinal);
+		// System.out.println("formation : " + play.field.offense.offensiveFormation);
+		// System.out.println("flipped : " + play.field.offense.isFlipped);
+		// System.out.println("odd : " + play.field.offense.isOdd);
+		// System.out.println("Left Strength: " + play.field.offense.leftStrength);
 }
 
 	
