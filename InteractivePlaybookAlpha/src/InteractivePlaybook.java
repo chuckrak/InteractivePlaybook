@@ -171,7 +171,7 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			outCall.setHorizontalAlignment(JTextField.CENTER);
 			outCall.setPreferredSize(new Dimension(400, 100));
 			if(play.field.offense.makeOutCall()) {
-				play.field.offense.makeDefensiveLineman(play.field.offense.isFlipped, true);
+				play.field.offense.makeDefensiveLineman(play.field.offense.rightFormation, true);
 				play.updateMap();
 				repaint();
 				outCall.setText("You correctly made an out call");
@@ -203,7 +203,7 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 			correctPosOverlay = new JFrame("Correct Positions");
 			if (play.field.offense.cardinal) {
 				correctPos.setText("Position 1: " + makeCoords(play.field.offense.dropAlign[0], play.field.offense.dropAlign[1]) + 
-						"\nPosition 2: " + makeCoords(play.field.offense.secondDropAlign[0], play.field.offense.secondDropAlign[1]));	
+						"\nPosition 2: " + makeCoords(play.field.offense.rushAlign[0], play.field.offense.rushAlign[1]));	
 			}
 			else {
 				correctPos.setText("Position 1: " + makeCoords(play.field.offense.dropAlign[0], play.field.offense.dropAlign[1]) + 
@@ -248,7 +248,7 @@ public class InteractivePlaybook extends JFrame implements ActionListener {
 		else if(playerX[player-1] == play.field.offense.dropAlign[0] && playerY[player-1] == play.field.offense.dropAlign[1]) {
 			return true;
 		}
-		else if(playerX[player-1] == play.field.offense.secondDropAlign[0] && playerY[player-1] == play.field.offense.secondDropAlign[1]) {
+		else if(playerX[player-1] == play.field.offense.rushAlign[0] && playerY[player-1] == play.field.offense.rushAlign[1]) {
 			return true;
 		}
 		else {
