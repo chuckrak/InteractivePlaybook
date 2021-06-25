@@ -90,7 +90,6 @@ public class RandomOffenseMaker {
 //		MAKING FIELD
 		makeEmptyPieceContent();
 		makeOffensiveLineman(rightFormation);
-		randForm = 5;
 		switch(randForm) {
 			case 0:
 				makePro(rightFormation, isSplit);
@@ -1335,11 +1334,11 @@ public class RandomOffenseMaker {
 							dropAlign = sixty;
 						}
 						else if(eagle){
-							dropAlign = hip;
+							dropAlign = rock;
 							rushAlign = mirror(fiveTech); 
 						}
 						else{ // angle
-							dropAlign = hip;
+							dropAlign = rock;
 							rushAlign = mirror(ghost);
 						}
 					}			
